@@ -28,13 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            labelOut = new Label();
             SuspendLayout();
+            // 
+            // labelOut
+            // 
+            labelOut.Location = new Point(52, 52);
+            labelOut.Name = "labelOut";
+            labelOut.Size = new Size(631, 314);
+            labelOut.TabIndex = 0;
             // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelOut);
             Name = "FormMain";
             Text = "FormMain";
             Load += FormMain_Load;
@@ -42,5 +51,7 @@
         }
 
         #endregion
+
+        private Label labelOut;
     }
 }

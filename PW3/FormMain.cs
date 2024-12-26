@@ -9,14 +9,17 @@ namespace PW3
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            using (ApplicationContext db = new ApplicationContext())
+            using (DbPartnersContext db = new DbPartnersContext())
             {
-                // получаем объекты из бд и выводим на консоль
-                var users = db.Partners.ToList();
-                Console.WriteLine("Users list:");
-                foreach (User u in users)
+                var partners = db.Partners.ToList();
+                var products = db.Products.ToList();
+                var typesPartner = db.TypesOfPartners.ToList();
+                var typesProduct = db.TypesOfProducts.ToList();
+                var partnersProducts = db.PartnersPoducts.ToList();
+                //Console.WriteLine("Список партнеров:");
+                foreach (Partner u in partners)
                 {
-                    Console.WriteLine($"{u.Id}.{u.Name} - {u.Age}");
+                    labelOut.Text += ($"{u.Id}.{u.IdTypeOfPartner} - {u.NameOfPartner} - {u.LegalAdress} - {u.Tin} - {u.FullNameOfDirector} - {u.Telephone} - {u.Email} - {u.Raiting} \n");
                 }
             }
         }
