@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,6 +61,77 @@ namespace PW3
             MessageBox.Show("Новый объект добавлен");
 
             this.dataGridViewType.DataSource = this.db.TypesOfPartners.Local.OrderBy(O => O.TypeOfPartner).ToList();
+        }
+
+        private void buttonTypeEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewType.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            int index = dataGridViewType.SelectedRows[0].Index;
+            short id = 0;
+            bool converted = Int16.TryParse(dataGridViewType[0, index].Value.ToString(), out id);
+            if (!converted)
+            {
+                return;
+            }
+            TypesOfPartner partnerType = db.TypesOfPartners.Find(id);
+
+            FormAddTypeOfPartners formTypeAdd = new();
+
+            formTypeAdd.textBoxTypeName.Text = partnerType.TypeOfPartner;
+
+            DialogResult result = formTypeAdd.ShowDialog(this);
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+            partnerType.TypeOfPartner = formTypeAdd.textBoxTypeName.Text;
+            db.SaveChanges();
+
+            MessageBox.Show("Объект обновлен");
+
+            this.dataGridViewType.DataSource = this.db.TypesOfPartners.Local
+                .OrderBy(O => O.TypeOfPartner).ToList();
+
+        }
+
+        private void buttonTypeDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewType.SelectedRows.Count == 0)
+            {
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                "Вы уверены, что хотите удалить объект?",
+                "", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if(result == DialogResult.No)
+            {
+                return;
+            }
+
+
+
+            int index = dataGridViewType.SelectedRows[0].Index;
+            short id = 0;
+            bool converted = Int16.TryParse(dataGridViewType[0, index].Value.ToString(), out id);
+            if (!converted)
+            {
+                return;
+            }
+            TypesOfPartner partnerType = db.TypesOfPartners.Find(id);
+
+            db.TypesOfPartners.Remove(partnerType);
+            db.SaveChanges();
+
+            MessageBox.Show("Объект удален");
+
+            this.dataGridViewType.DataSource = this.db.TypesOfPartners.Local
+                .OrderBy(O => O.TypeOfPartner).ToList();
         }
     }
 }
